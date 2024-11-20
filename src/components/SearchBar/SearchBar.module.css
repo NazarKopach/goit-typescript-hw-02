@@ -1,0 +1,14 @@
+.header {
+  background-color: rgb(87, 87, 218);
+  padding: 10px;
+}
+
+.headerForm {
+  display: flex;
+  justify-content: center;
+}
+
+.headerInput {
+  height: 30px;
+  width: 400px;
+}

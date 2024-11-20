@@ -1,0 +1,16 @@
+.LoadMoreBtn {
+  background: rgb(53, 53, 175);
+  border: none;
+  width: 150px;
+  height: 50px;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.LoadMoreBtnWrapper {
+  display: flex;
+  justify-content: center;
+}
