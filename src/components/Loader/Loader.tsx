@@ -1,7 +1,8 @@
 import { Puff } from "react-loader-spinner";
 import style from "./Loader.module.css";
+import { LoaderProps } from "../App/App.types";
 
-const Loader = () => {
+const Loader: React.FC<LoaderProps> = () => {
   return (
     <div className={style.loader}>
       <Puff

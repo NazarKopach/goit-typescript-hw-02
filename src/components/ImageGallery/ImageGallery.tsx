@@ -1,7 +1,9 @@
+import React from "react";
 import ImageCard from "../ImageCard/ImageCard";
 import style from "./ImageGallery.module.css";
+import { ImgGalleryProps } from "../App/App.types";
 
-const ImageGallery = ({ results, openModal }) => {
+const ImageGallery: React.FC<ImgGalleryProps> = ({ results, openModal }) => {
   return (
     <ul className={style.gallery}>
       {results !== null &&

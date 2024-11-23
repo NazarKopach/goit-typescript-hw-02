@@ -1,6 +1,7 @@
 import style from "./LoadMoreBtn.module.css";
+import { LoadMoreBtnProps } from "../App/App.types";
 
-const LoadMoreBtn = ({ setPage }) => {
+const LoadMoreBtn: React.FC<LoadMoreBtnProps> = ({ setPage }) => {
   return (
     <div className={style.LoadMoreBtnWrapper}>
       <button className={style.LoadMoreBtn} onClick={setPage} type="submit">

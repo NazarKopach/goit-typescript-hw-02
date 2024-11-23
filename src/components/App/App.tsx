@@ -1,23 +1,26 @@
 import axios from "axios";
-import SearchBar from "./components/SearchBar/SearchBar";
-import ImageGallery from "./components/ImageGallery/ImageGallery";
+import SearchBar from "../SearchBar/SearchBar";
+import ImageGallery from "../ImageGallery/ImageGallery";
+import Loader from "../Loader/Loader";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
+import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
+import ImageModal from "../ImageModal/ImageModal";
+
+import { ImgResult } from "../App/App.types";
+import { FetchResponse } from "../App/App.types";
 import { useEffect, useState } from "react";
-import Loader from "./components/Loader/Loader";
-import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
-import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
-import ImageModal from "./components/ImageModal/ImageModal";
 
 function App() {
-  const [results, setResults] = useState(null);
-  const [loader, setLoader] = useState(false);
-  const [error, setError] = useState(false);
-  const [searchValue, setSearchValue] = useState(null);
-  const [totalPages, setTotalPages] = useState(null);
-  const [page, setPage] = useState(1);
-  const [modalIsOpen, setIsOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [results, setResults] = useState<ImgResult[] | null>(null);
+  const [loader, setLoader] = useState<boolean>(false);
+  const [error, setError] = useState<boolean | string>(false);
+  const [searchValue, setSearchValue] = useState<string | null>(null);
+  const [totalPages, setTotalPages] = useState<number | null>(null);
+  const [page, setPage] = useState<number>(1);
+  const [modalIsOpen, setIsOpen] = useState<boolean>(false);
+  const [selectedImage, setSelectedImage] = useState<ImgResult | null>(null);
 
-  const onSubmit = (searchTerm) => {
+  const onSubmit = (searchTerm: string): void => {
     setSearchValue(searchTerm);
     setPage(1);
     setResults([]);
@@ -25,22 +28,22 @@ function App() {
   };
 
   useEffect(() => {
-    const fetchPhotos = async () => {
+    const fetchPhotos = async (): Promise<void> => {
       if (searchValue === null) return;
 
       try {
         setLoader(true);
-        const { data } = await axios.get(
+        const { data } = await axios.get<FetchResponse>(
           `https://api.unsplash.com/search/photos?query=${searchValue}&page=${page}&client_id=LMF9x-i_SfE5T0Hve8YKUQz0rmCzzBTy3KzOwV93csA`
         );
         setTotalPages(data.total_pages);
 
         if (page !== 1) {
-          setResults((prevState) => [...prevState, ...data.results]);
+          setResults((prevState) => [...(prevState || []), ...data.results]);
         } else {
           setResults(data.results);
         }
-      } catch (error) {
+      } catch (error: any) {
         setError(error);
       } finally {
         setLoader(false);
@@ -66,12 +69,12 @@ function App() {
     },
   };
 
-  function openModal(image) {
+  function openModal(image: ImgResult): void {
     setSelectedImage(image);
     setIsOpen(true);
   }
 
-  function closeModal() {
+  function closeModal(): void {
     setIsOpen(false);
     setSelectedImage(null);
   }
@@ -82,7 +85,7 @@ function App() {
       {loader && <Loader />}
       {error && <ErrorMessage />}
       <ImageGallery results={results} openModal={openModal} />
-      {results !== null && page < totalPages && (
+      {results !== null && page < (totalPages || 0) && (
         <LoadMoreBtn setPage={() => setPage((prev) => prev + 1)} />
       )}
       {selectedImage && (
